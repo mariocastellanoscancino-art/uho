@@ -1,0 +1,15 @@
+export { FormularioSolicitudVacaciones } from './FormularioSolicitudVacaciones';
+export { ListaSolicitudesVacaciones } from './ListaSolicitudesVacaciones';
+export { EstadisticasVacaciones } from './EstadisticasVacaciones';
+export { ListaEmpleados } from './ListaEmpleados';
+export { AlertaVacaciones } from './AlertaVacaciones';
+export { PerfilEmpleado } from './PerfilEmpleado';
+export { TarjetasEstadisticasPersonales } from './TarjetasEstadisticasPersonales';
+export { TablaSolicitudesPersonales } from './TablaSolicitudesPersonales';
+export { CalendarioSelectorDias } from './CalendarioSelectorDias';
+export { ModalNuevaSolicitud } from './ModalNuevaSolicitud';
+export { SelectorUsuario } from './SelectorUsuario';
+export { ListaSolicitudesPendientes } from './ListaSolicitudesPendientes';
+export { HistorialVacaciones } from './HistorialVacaciones';
+export { VistaPersonal } from './VistaPersonal';
+export { InstruccionesPrueba } from './InstruccionesPrueba';
