@@ -9,6 +9,7 @@ import {
   TarjetasEstadisticasPersonales,
   TablaSolicitudesPersonales,
   ModalNuevaSolicitud,
+  ModalCancelarSolicitud,
   SelectorUsuario,
   ListaSolicitudesPendientes,
   HistorialVacaciones,
@@ -28,6 +29,7 @@ export default function VacacionesPageContent() {
     crearSolicitudVacaciones,
     aprobarSolicitud,
     rechazarSolicitud,
+    eliminarSolicitud,
     obtenerEmpleadosVisibles,
     obtenerSolicitudesVisibles,
     obtenerSolicitudesPendientesAprobacion
@@ -35,6 +37,8 @@ export default function VacacionesPageContent() {
 
   const [tabActiva, setTabActiva] = useState<TabType>('mis-vacaciones');
   const [modalAbierto, setModalAbierto] = useState(false);
+  const [modalCancelarAbierto, setModalCancelarAbierto] = useState(false);
+  const [solicitudACancelar, setSolicitudACancelar] = useState<string | null>(null);
   const [mensaje, setMensaje] = useState<{ tipo: 'success' | 'error' | 'warning' | 'info', texto: string } | null>(null);
   const [loadingAprobacion, setLoadingAprobacion] = useState(false);
   const [mostrarInstrucciones, setMostrarInstrucciones] = useState(false);
@@ -92,9 +96,30 @@ export default function VacacionesPageContent() {
   };
 
   const handleEliminarSolicitud = (solicitudId: string) => {
-    console.log('Eliminar solicitud:', solicitudId);
-    setMensaje({ tipo: 'success', texto: 'Solicitud eliminada exitosamente' });
-    setTimeout(() => setMensaje(null), 5000);
+    setSolicitudACancelar(solicitudId);
+    setModalCancelarAbierto(true);
+  };
+
+  const handleConfirmarCancelacion = async (motivo: string) => {
+    if (!solicitudACancelar) return;
+
+    try {
+      await eliminarSolicitud(solicitudACancelar, motivo);
+      setMensaje({ 
+        tipo: 'success', 
+        texto: '❌ Solicitud cancelada exitosamente. Los días han sido devueltos a su cuenta.' 
+      });
+      setTimeout(() => setMensaje(null), 5000);
+    } catch (error) {
+      setMensaje({
+        tipo: 'error',
+        texto: error instanceof Error ? error.message : 'Error al cancelar la solicitud'
+      });
+      setTimeout(() => setMensaje(null), 5000);
+    } finally {
+      setSolicitudACancelar(null);
+      setModalCancelarAbierto(false);
+    }
   };
 
   const handleAprobarSolicitud = async (solicitudId: string) => {
@@ -340,6 +365,20 @@ export default function VacacionesPageContent() {
           empleado={empleadoActual}
           onSubmit={handleCrearSolicitud}
           loading={loading}
+        />
+      )}
+
+      {/* Modal de cancelar solicitud */}
+      {solicitudACancelar && (
+        <ModalCancelarSolicitud
+          isOpen={modalCancelarAbierto}
+          onClose={() => {
+            setModalCancelarAbierto(false);
+            setSolicitudACancelar(null);
+          }}
+          onConfirm={handleConfirmarCancelacion}
+          loading={loading}
+          solicitudId={solicitudACancelar}
         />
       )}
     </div>

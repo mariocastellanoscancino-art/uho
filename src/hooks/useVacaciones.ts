@@ -395,6 +395,43 @@ export const useVacaciones = (usuarioActual?: Usuario) => {
     }
   }, [solicitudes]);
 
+  const eliminarSolicitud = useCallback(async (solicitudId: string, motivo?: string) => {
+    try {
+      setLoading(true);
+      const solicitud = solicitudes.find(s => s.id === solicitudId);
+      
+      if (!solicitud) {
+        throw new Error('Solicitud no encontrada');
+      }
+
+      if (solicitud.estado !== 'pendiente') {
+        throw new Error('Solo se pueden cancelar solicitudes pendientes');
+      }
+
+      // Devolver los días al empleado
+      setEmpleados(prev => prev.map(emp => 
+        emp.id === solicitud.empleadoId 
+          ? { ...emp, diasVacacionesDisponibles: emp.diasVacacionesDisponibles + solicitud.diasSolicitados }
+          : emp
+      ));
+
+      // En un sistema real, aquí se registraría el motivo de cancelación
+      // Por ahora, simplemente eliminamos la solicitud
+      setSolicitudes(prev => prev.filter(sol => sol.id !== solicitudId));
+      
+      // Log del motivo para debugging (en producción esto iría a una base de datos)
+      if (motivo) {
+        console.log(`Solicitud ${solicitudId} cancelada. Motivo: ${motivo}`);
+      }
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al cancelar la solicitud');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [solicitudes]);
+
   const obtenerEstadisticas = useCallback((): VacacionesStats => {
     const solicitudesPendientes = solicitudes.filter(s => s.estado === 'pendiente').length;
     const vacacionesAprobadas = solicitudes.filter(s => s.estado === 'aprobado').length;
@@ -416,6 +453,7 @@ export const useVacaciones = (usuarioActual?: Usuario) => {
     crearSolicitudVacaciones,
     aprobarSolicitud,
     rechazarSolicitud,
+    eliminarSolicitud,
     obtenerEstadisticas,
     calcularDiasHabiles,
     // Nuevas funciones para manejo de roles

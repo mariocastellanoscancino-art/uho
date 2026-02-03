@@ -8,6 +8,7 @@ export { TarjetasEstadisticasPersonales } from './TarjetasEstadisticasPersonales
 export { TablaSolicitudesPersonales } from './TablaSolicitudesPersonales';
 export { CalendarioSelectorDias } from './CalendarioSelectorDias';
 export { ModalNuevaSolicitud } from './ModalNuevaSolicitud';
+export { ModalCancelarSolicitud } from './ModalCancelarSolicitud';
 export { SelectorUsuario } from './SelectorUsuario';
 export { ListaSolicitudesPendientes } from './ListaSolicitudesPendientes';
 export { HistorialVacaciones } from './HistorialVacaciones';
