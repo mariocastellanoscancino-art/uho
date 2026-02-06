@@ -34,14 +34,45 @@ export const TarjetasEstadisticasPersonales: React.FC<Props> = ({
     }
   };
 
+  // Determinar el color y mensaje basado en días disponibles
+  const getDiasDisponiblesInfo = () => {
+    const diasDisponibles = empleado.diasVacacionesDisponibles;
+    
+    if (diasDisponibles <= 0) {
+      return {
+        color: 'text-red-600',
+        bgColor: 'bg-red-50 dark:bg-red-900/20',
+        subtitle: '¡Sin días disponibles!',
+        borderColor: 'border-red-200 dark:border-red-800'
+      };
+    } else if (diasDisponibles <= 5) {
+      return {
+        color: 'text-orange-600',
+        bgColor: 'bg-orange-50 dark:bg-orange-900/20',
+        subtitle: `De ${empleado.diasVacacionesAnuales} días totales`,
+        borderColor: 'border-orange-200 dark:border-orange-800'
+      };
+    } else {
+      return {
+        color: 'text-green-600',
+        bgColor: 'bg-green-50 dark:bg-green-900/20',
+        subtitle: `De ${empleado.diasVacacionesAnuales} días totales`,
+        borderColor: 'border-green-200 dark:border-green-800'
+      };
+    }
+  };
+
+  const diasInfo = getDiasDisponiblesInfo();
+
   const cards = [
     {
       title: 'Días disponibles',
       value: empleado.diasVacacionesDisponibles,
-      subtitle: `De ${empleado.diasVacacionesAnuales} días totales`,
+      subtitle: diasInfo.subtitle,
       period: obtenerPeriodoVacaciones(),
-      color: 'text-green-600',
-      bgColor: 'bg-gray-100 dark:bg-gray-800',
+      color: diasInfo.color,
+      bgColor: diasInfo.bgColor,
+      borderColor: diasInfo.borderColor,
     },
     {
       title: 'Días disfrutados',
@@ -73,11 +104,6 @@ export const TarjetasEstadisticasPersonales: React.FC<Props> = ({
     <div className="mb-8">
       {/* Título de sección */}
       <div className="flex items-center mb-6">
-        <div className="w-6 h-6 bg-gray-300 rounded mr-3 flex items-center justify-center">
-          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Mis vacaciones
         </h2>
@@ -88,7 +114,9 @@ export const TarjetasEstadisticasPersonales: React.FC<Props> = ({
         {cards.map((card, index) => (
           <div
             key={index}
-            className={`${card.bgColor} p-6 rounded-2xl border border-gray-100 dark:border-strokedark dark:bg-boxdark`}
+            className={`${card.bgColor} p-6 rounded-2xl border ${
+              card.borderColor || 'border-gray-100 dark:border-strokedark'
+            } ${index === 0 && empleado.diasVacacionesDisponibles <= 0 ? 'ring-2 ring-red-200 dark:ring-red-800' : ''} dark:bg-boxdark`}
           >
             <div className="mb-4">
               <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
@@ -96,9 +124,16 @@ export const TarjetasEstadisticasPersonales: React.FC<Props> = ({
               </h3>
               <div className={`text-3xl font-bold ${card.color} dark:text-white`}>
                 {card.value}
+                {index === 0 && empleado.diasVacacionesDisponibles <= 0 && (
+                  <span className="ml-2 text-lg">⚠️</span>
+                )}
               </div>
               {card.subtitle && (
-                <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <div className={`text-sm mt-1 ${
+                  index === 0 && empleado.diasVacacionesDisponibles <= 0 
+                    ? 'text-red-600 dark:text-red-400 font-medium' 
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}>
                   {card.subtitle}
                 </div>
               )}

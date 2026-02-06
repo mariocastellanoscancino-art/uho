@@ -39,7 +39,7 @@ export const VistaPersonal: React.FC<Props> = ({ empleados }) => {
       emp.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
       emp.apellidos.toLowerCase().includes(busqueda.toLowerCase()) ||
       emp.departamento.toLowerCase().includes(busqueda.toLowerCase()) ||
-      emp.email.toLowerCase().includes(busqueda.toLowerCase())
+      emp.id.toLowerCase().includes(busqueda.toLowerCase())
     )
     .sort((a, b) => {
       switch (ordenPor) {
@@ -87,7 +87,7 @@ export const VistaPersonal: React.FC<Props> = ({ empleados }) => {
               type="text"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              placeholder="Buscar por nombre, apellido, departamento o email..."
+              placeholder="Buscar por nombre, apellido, departamento o id"
               className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
             />
             <svg className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

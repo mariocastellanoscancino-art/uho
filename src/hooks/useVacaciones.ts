@@ -11,47 +11,37 @@ const empleadosEjemplo: Empleado[] = [
     departamento: 'Analista QA',
     fechaIngreso: new Date('2021-01-15'),
     diasVacacionesAnuales: 22,
-    diasVacacionesUsados: 2,
-    diasVacacionesDisponibles: 20,
+    diasVacacionesUsados: 22,
+    diasVacacionesDisponibles: 0,
   },
   {
     id: '2',
-    nombre: 'María Elena',
-    apellidos: 'González López',
-    email: 'maria.gonzalez@empresa.com',
+    nombre: 'Patricio',
+    apellidos: 'Bustos',
+    email: 'patricio.bustos@empresa.com',
     departamento: 'QA',
     fechaIngreso: new Date('2019-03-10'),
     diasVacacionesAnuales: 25,
-    diasVacacionesUsados: 8,
-    diasVacacionesDisponibles: 17,
+    diasVacacionesUsados: 25,
+    diasVacacionesDisponibles: 0,
   },
   {
     id: '3',
-    nombre: 'Carlos Roberto',
-    apellidos: 'Rodríguez Martín',
-    email: 'carlos.rodriguez@empresa.com',
+    nombre: 'Gabriel',
+    apellidos: 'Rojo',
+    email: 'gabriel.rojo@empresa.com',
     departamento: 'Tecnología',
     fechaIngreso: new Date('2018-07-01'),
     diasVacacionesAnuales: 28,
     diasVacacionesUsados: 15,
     diasVacacionesDisponibles: 13,
   },
-  {
-    id: '4',
-    nombre: 'Patricio',
-    apellidos: 'Bustos',
-    email: 'patricio.bustos@empresa.com',
-    departamento: 'Project Manager',
-    fechaIngreso: new Date('2017-05-15'),
-    diasVacacionesAnuales: 22,
-    diasVacacionesUsados: 0,
-    diasVacacionesDisponibles: 22,
-  },
+ 
   {
     id: '5',
-    nombre: 'Ana Sofía',
-    apellidos: 'Martínez Vega',
-    email: 'ana.martinez@empresa.com',
+    nombre: 'Jesus ',
+    apellidos: 'Navarro',
+    email: 'Jesus.Navarro@empresa.com',
     departamento: 'Recursos Humanos',
     fechaIngreso: new Date('2016-09-01'),
     diasVacacionesAnuales: 28,
@@ -262,6 +252,11 @@ export const useVacaciones = (usuarioActual?: Usuario) => {
         throw new Error('Empleado no encontrado');
       }
 
+      // Validar que el empleado tenga días de vacaciones disponibles
+      if (empleado.diasVacacionesDisponibles <= 0) {
+        throw new Error(`Lo siento, no tienes días de vacaciones disponibles. Has utilizado ${empleado.diasVacacionesUsados} de ${empleado.diasVacacionesAnuales} días asignados para este año.`);
+      }
+
       // Para formularios con fechas individuales
       let diasSolicitados: number;
       let fechaInicio: Date;
@@ -275,6 +270,11 @@ export const useVacaciones = (usuarioActual?: Usuario) => {
         }
 
         diasSolicitados = fechasSeleccionadas.length;
+        
+        // Validar que los días solicitados no excedan los días disponibles
+        if (diasSolicitados > empleado.diasVacacionesDisponibles) {
+          throw new Error(`No puedes solicitar ${diasSolicitados} días. Solo tienes ${empleado.diasVacacionesDisponibles} días disponibles.`);
+        }
         
         // Ordenar fechas para obtener inicio y fin
         const fechasOrdenadas = [...fechasSeleccionadas].sort((a, b) => a.getTime() - b.getTime());
@@ -296,10 +296,11 @@ export const useVacaciones = (usuarioActual?: Usuario) => {
         fechaInicio = new Date(formulario.fechaInicio);
         fechaFin = new Date(formulario.fechaFin);
         diasSolicitados = calcularDiasHabiles(fechaInicio, fechaFin);
-      }
-
-      if (diasSolicitados > empleado.diasVacacionesDisponibles) {
-        throw new Error('No tiene suficientes días de vacaciones disponibles');
+        
+        // Validar que los días solicitados no excedan los días disponibles
+        if (diasSolicitados > empleado.diasVacacionesDisponibles) {
+          throw new Error(`No puedes solicitar ${diasSolicitados} días. Solo tienes ${empleado.diasVacacionesDisponibles} días disponibles.`);
+        }
       }
 
       if (fechaInicio > fechaFin) {

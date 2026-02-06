@@ -190,15 +190,38 @@ export default function VacacionesPageContent() {
                 />
                 
                 <div className="mb-6">
-                  <button
-                    onClick={() => setModalAbierto(true)}
-                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Nueva solicitud de vacaciones
-                  </button>
+                  {empleadoActual && empleadoActual.diasVacacionesDisponibles <= 0 ? (
+                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 text-red-600 dark:text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+                        </svg>
+                        <div>
+                          <h4 className="text-sm font-medium text-red-800 dark:text-red-200">
+                            No tienes días de vacaciones disponibles
+                          </h4>
+                          <p className="text-sm text-red-600 dark:text-red-400 mt-1">
+                            Has utilizado {empleadoActual.diasVacacionesUsados} de {empleadoActual.diasVacacionesAnuales} días asignados para este año.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setModalAbierto(true)}
+                      disabled={!empleadoActual || empleadoActual.diasVacacionesDisponibles <= 0}
+                      className={`inline-flex items-center px-4 py-2 text-sm font-medium transition-colors ${
+                        empleadoActual && empleadoActual.diasVacacionesDisponibles > 0
+                          ? 'text-blue-600 hover:text-blue-700'
+                          : 'text-gray-400 cursor-not-allowed'
+                      }`}
+                    >
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Nueva solicitud de vacaciones
+                    </button>
+                  )}
                 </div>
 
                 <TablaSolicitudesPersonales

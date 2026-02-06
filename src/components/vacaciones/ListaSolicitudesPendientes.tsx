@@ -64,10 +64,6 @@ export const ListaSolicitudesPendientes: React.FC<Props> = ({
         </svg>
         <h2 className="text-lg font-semibold">Solicitudes pendientes de aprobación</h2>
       </div>
-      
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        📅→ Arrastra las solicitudes no asignadas a tu equipo
-      </p>
 
       {solicitudes.length === 0 ? (
         <div className="bg-white dark:bg-boxdark rounded-2xl p-8 text-center border border-gray-100 dark:border-strokedark">
