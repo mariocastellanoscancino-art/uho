@@ -16,6 +16,7 @@ export interface Usuario {
 
 export interface Empleado {
   id: string;
+  numeroEmpleado: number; // Nuevo campo para mostrar ID numérico
   nombre: string;
   apellidos: string;
   email: string;
@@ -53,6 +54,7 @@ export interface Permisos {
 
 export interface SolicitudVacaciones {
   id: string;
+  numeroSolicitud?: number; // Nuevo campo para mostrar ID numérico
   empleadoId: string;
   fechaInicio: Date;
   fechaFin: Date;

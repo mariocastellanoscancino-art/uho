@@ -126,15 +126,15 @@ export const HistorialVacaciones: React.FC<Props> = ({
       ) : (
         <div className="bg-white dark:bg-boxdark rounded-xl border border-gray-100 dark:border-strokedark overflow-hidden">
           {/* Header de la tabla */}
-          <div className="grid grid-cols-8 gap-4 p-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">ID</div>
+          <div className="grid grid-cols-9 gap-4 p-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">ID Empleado</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Nombre</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Puesto</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Departamento</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Período</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Días Hábiles</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Motivo</div>
-            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Solicitud</div>
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Estado</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Comentarios</div>
           </div>
 
@@ -142,15 +142,19 @@ export const HistorialVacaciones: React.FC<Props> = ({
           {solicitudesFiltradas.map((solicitud, index) => {
             const empleado = empleados.find(e => e.id === solicitud.empleadoId);
             return (
-              <div key={solicitud.id} className={`grid grid-cols-8 gap-4 p-4 text-sm ${index % 2 === 0 ? 'bg-white dark:bg-boxdark' : 'bg-gray-50/50 dark:bg-gray-800/50'} border-b border-gray-100 dark:border-gray-700 last:border-b-0`}>
-                <div className="text-blue-600 font-medium">{solicitud.id}</div>
+              <div key={solicitud.id} className={`grid grid-cols-9 gap-4 p-4 text-sm ${index % 2 === 0 ? 'bg-white dark:bg-boxdark' : 'bg-gray-50/50 dark:bg-gray-800/50'} border-b border-gray-100 dark:border-gray-700 last:border-b-0`}>
+                <div className="text-blue-600 font-medium">
+                  {empleado?.numeroEmpleado || `EMP-${empleado?.id || 'N/A'}`}
+                </div>
                 <div className="text-gray-900 dark:text-white">
                   {empleado ? `${empleado.nombre} ${empleado.apellidos}` : 'N/A'}
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">
                   {empleado?.departamento === 'TI' ? 'Analista QA' : 
-                   empleado?.departamento === 'TI' ? 'Científico de datos' :
-                   empleado?.departamento === 'TI' ? 'Ejecutivo de desarrollo' : 'N/A'}
+                   empleado?.departamento === 'Desarrollo' ? 'Ejecutivo de desarrollo' :
+                   empleado?.departamento === 'Diseño' ? 'Diseñador' : 
+                   empleado?.departamento === 'Recursos Humanos' ? 'Especialista RH' :
+                   empleado?.departamento === 'Tecnología' ? 'Científico de datos' : 'N/A'}
                 </div>
                 <div className="text-gray-600 dark:text-gray-400">
                   {empleado?.departamento || 'N/A'}
@@ -177,7 +181,7 @@ export const HistorialVacaciones: React.FC<Props> = ({
                   )}
                 </div>
                 <div className="text-gray-600 dark:text-gray-400 text-xs">
-                  {solicitud.comentariosAprobador || (solicitud.estado === 'aprobado' ? '"Buen descanso"' : '"Período duplicado"')}
+                  {solicitud.comentariosAprobador || '-'}
                 </div>
               </div>
             );

@@ -128,7 +128,7 @@ export const VistaPersonal: React.FC<Props> = ({ empleados }) => {
         <div className="bg-white dark:bg-boxdark rounded-xl border border-gray-100 dark:border-strokedark overflow-hidden">
           {/* Header de la tabla */}
           <div className="grid grid-cols-7 gap-4 p-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">ID</div>
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">ID Empleado</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Nombre</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Puesto</div>
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Departamento</div>
@@ -140,14 +140,16 @@ export const VistaPersonal: React.FC<Props> = ({ empleados }) => {
           {/* Filas de la tabla */}
           {empleadosFiltrados.map((empleado, index) => (
             <div key={empleado.id} className={`grid grid-cols-7 gap-4 p-4 text-sm ${index % 2 === 0 ? 'bg-white dark:bg-boxdark' : 'bg-gray-50/50 dark:bg-gray-800/50'} border-b border-gray-100 dark:border-gray-700 last:border-b-0`}>
-              <div className="text-blue-600 font-medium">{empleado.id}</div>
+              <div className="text-blue-600 font-medium">{empleado.numeroEmpleado || `EMP-${empleado.id}`}</div>
               <div className="text-gray-900 dark:text-white font-medium">
                 {empleado.nombre} {empleado.apellidos}
               </div>
               <div className="text-gray-600 dark:text-gray-400">
                 {empleado.departamento === 'TI' ? 'Analista QA' : 
-                 empleado.departamento === 'TI' && empleado.nombre.includes('Arturo') ? 'Científico de datos' :
-                 empleado.departamento === 'TI' && empleado.nombre.includes('Luis') ? 'Ejecutivo de desarrollo' : 'Analista QA'}
+                 empleado.departamento === 'Desarrollo' ? 'Ejecutivo de desarrollo' :
+                 empleado.departamento === 'Diseño' ? 'Diseñador' : 
+                 empleado.departamento === 'Recursos Humanos' ? 'Especialista RH' :
+                 empleado.departamento === 'Tecnología' ? 'Científico de datos' : 'Analista QA'}
               </div>
               <div className="text-gray-600 dark:text-gray-400">
                 {empleado.departamento}

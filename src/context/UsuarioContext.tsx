@@ -135,9 +135,9 @@ interface Props {
 }
 
 export const UsuarioProvider: React.FC<Props> = ({ children }) => {
-  // Por defecto, usar María García como colaborador inicial
+  // Por defecto, usar Patricio Bustos (encargado) para ver mejor funcionalidad
   const [usuarioActual, setUsuarioActual] = useState<Usuario | null>(
-    usuariosEjemplo.find(u => u.nombre === 'María') || usuariosEjemplo[0]
+    usuariosEjemplo.find(u => u.nombre === 'Patricio') || usuariosEjemplo[2]
   );
 
   const permisos = usuarioActual ? obtenerPermisosPorTipo(usuarioActual.tipo) : obtenerPermisosPorTipo('colaborador');

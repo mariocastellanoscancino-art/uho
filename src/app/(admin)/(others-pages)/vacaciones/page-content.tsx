@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useVacaciones } from '@/hooks/useVacaciones';
 import { useUsuario } from '@/context/UsuarioContext';
+import FirebaseStatus from '@/components/FirebaseStatus';
 import {
   AlertaVacaciones,
   PerfilEmpleado,
@@ -32,7 +33,8 @@ export default function VacacionesPageContent() {
     eliminarSolicitud,
     obtenerEmpleadosVisibles,
     obtenerSolicitudesVisibles,
-    obtenerSolicitudesPendientesAprobacion
+    obtenerSolicitudesPendientesAprobacion,
+    obtenerHistorialCompleto
   } = useVacaciones(usuarioActual || undefined);
 
   const [tabActiva, setTabActiva] = useState<TabType>('mis-vacaciones');
@@ -50,6 +52,7 @@ export default function VacacionesPageContent() {
   const empleadosVisibles = obtenerEmpleadosVisibles(usuarioActual || undefined);
   const solicitudesVisibles = obtenerSolicitudesVisibles(usuarioActual || undefined);
   const solicitudesPendientes = obtenerSolicitudesPendientesAprobacion(usuarioActual || undefined);
+  const historialCompleto = obtenerHistorialCompleto(usuarioActual || undefined);
 
   // Calcular solicitudes pendientes del usuario actual
   const misSolicitudesPendientes = solicitudesVisibles.filter(
@@ -253,7 +256,7 @@ export default function VacacionesPageContent() {
         return (
           <div className="space-y-6">
             <HistorialVacaciones
-              solicitudes={solicitudesVisibles}
+              solicitudes={historialCompleto}
               empleados={empleados}
             />
           </div>
@@ -300,6 +303,11 @@ export default function VacacionesPageContent() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
+      {/* Firebase Status */}
+      <div className="fixed top-4 right-4 z-50">
+        <FirebaseStatus />
+      </div>
+
       {/* Mostrar errores globales */}
       {error && (
         <AlertaVacaciones
