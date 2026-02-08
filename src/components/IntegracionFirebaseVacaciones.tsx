@@ -2,10 +2,10 @@
 
 import React, { useState, useContext } from 'react';
 import { useFirebaseVacationsUholidays3 } from '@/hooks/useFirebaseVacationsUholidays3';
-import { UsuarioContext } from '@/context/UsuarioContext';
+import { useUsuario } from '@/context/UsuarioContext';
 
 export default function IntegracionFirebaseVacaciones() {
-  const { usuario } = useContext(UsuarioContext);
+  const { usuarioActual } = useUsuario();
   const {
     loading,
     error,
@@ -43,7 +43,7 @@ export default function IntegracionFirebaseVacaciones() {
       // Paso 2: Crear solicitud de prueba
       addTestResult('📝 Creando solicitud de vacaciones de prueba...');
       const solicitudPrueba = {
-        empleadoId: usuario?.id || 'test_user',
+        empleadoId: usuarioActual?.id || 'test_user',
         diasSolicitados: 5,
         motivo: 'Vacaciones de prueba Firebase',
         fechaSolicitud: new Date(),
@@ -97,19 +97,19 @@ export default function IntegracionFirebaseVacaciones() {
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded">
             <p className="font-medium">Usuario actual:</p>
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              {usuario?.nombre || 'No definido'} {usuario?.apellidos || ''}
+              {usuarioActual?.nombre || 'No definido'} {usuarioActual?.apellidos || ''}
             </p>
           </div>
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded">
             <p className="font-medium">Tipo:</p>
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              {usuario?.tipo || 'No definido'}
+              {usuarioActual?.tipo || 'No definido'}
             </p>
           </div>
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded">
             <p className="font-medium">Departamento:</p>
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              {usuario?.departamento || 'No definido'}
+              {usuarioActual?.departamento || 'No definido'}
             </p>
           </div>
         </div>

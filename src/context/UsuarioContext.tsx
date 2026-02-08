@@ -168,4 +168,4 @@ export const useUsuario = (): UsuarioContextType => {
   return context;
 };
 
-export { usuariosEjemplo };
+export { UsuarioContext, usuariosEjemplo };

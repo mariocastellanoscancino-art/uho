@@ -63,6 +63,7 @@ export interface SolicitudVacaciones {
   estado: EstadoSolicitud;
   fechaSolicitud: Date;
   fechaRespuesta?: Date; // Nueva fecha de respuesta
+  comentarios?: string; // Campo para comentarios generales
   comentariosAprobador?: string;
   motivoRechazo?: string; // Nuevo motivo de rechazo
   aprobadoPor?: string;
