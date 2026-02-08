@@ -52,16 +52,34 @@ export const TablaSolicitudesPersonales: React.FC<Props> = ({
   };
 
   const formatearFecha = (fecha: Date): string => {
-    const date = new Date(fecha);
-    return date.toLocaleDateString('es-ES', { 
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    });
+    try {
+      const date = new Date(fecha);
+      // Verificar si la fecha es válida
+      if (isNaN(date.getTime())) {
+        return 'Fecha inválida';
+      }
+      return date.toLocaleDateString('es-ES', { 
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+    } catch (error) {
+      console.error('Error formateando fecha:', error);
+      return 'Error en fecha';
+    }
   };
 
   const formatearPeriodo = (fechaInicio: Date, fechaFin: Date): string => {
-    return `${formatearFecha(fechaInicio)} de ${new Date(fechaInicio).getFullYear()}`;
+    const fechaInicioStr = formatearFecha(fechaInicio);
+    const fechaFinStr = formatearFecha(fechaFin);
+    
+    // Si es el mismo día, mostrar solo una fecha
+    if (fechaInicioStr === fechaFinStr) {
+      return fechaInicioStr;
+    }
+    
+    // Si son fechas diferentes, mostrar el rango
+    return `${fechaInicioStr} al ${fechaFinStr}`;
   };
 
   if (solicitudesFiltradas.length === 0) {
@@ -149,7 +167,7 @@ export const TablaSolicitudesPersonales: React.FC<Props> = ({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
-                    {formatearFecha(solicitud.fechaInicio)} al {formatearFecha(solicitud.fechaFin)}
+                    {formatearPeriodo(solicitud.fechaInicio, solicitud.fechaFin)}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
