@@ -11,10 +11,32 @@ import {
   where, 
   orderBy,
   serverTimestamp,
-  onSnapshot
+  onSnapshot,
+  Timestamp
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { SolicitudVacaciones, Empleado } from '@/types/vacaciones';
+
+// Función auxiliar para convertir fechas de Firebase a Date
+const convertFirebaseDate = (value: unknown): Date => {
+  if (!value) return new Date();
+  
+  // Si ya es Date
+  if (value instanceof Date) return value;
+  
+  // Si es Timestamp de Firebase
+  if (value && typeof value === 'object' && 'toDate' in value) {
+    return (value as Timestamp).toDate();
+  }
+  
+  // Si es string o número
+  if (typeof value === 'string' || typeof value === 'number') {
+    const date = new Date(value);
+    if (!isNaN(date.getTime())) return date;
+  }
+  
+  return new Date();
+};
 
 export function useFirebaseVacationsUholidays3() {
   const [loading, setLoading] = useState(false);
@@ -29,8 +51,24 @@ export function useFirebaseVacationsUholidays3() {
 
       console.log('🔄 Creando solicitud en uholidays3...');
 
+      // Convertir fechas a Timestamp de Firebase
+      const fechaInicio = solicitud.fechaInicio instanceof Date 
+        ? Timestamp.fromDate(solicitud.fechaInicio) 
+        : Timestamp.fromDate(new Date(solicitud.fechaInicio));
+      
+      const fechaFin = solicitud.fechaFin instanceof Date 
+        ? Timestamp.fromDate(solicitud.fechaFin) 
+        : Timestamp.fromDate(new Date(solicitud.fechaFin));
+
+      const fechaSolicitud = solicitud.fechaSolicitud instanceof Date 
+        ? Timestamp.fromDate(solicitud.fechaSolicitud) 
+        : Timestamp.fromDate(new Date());
+
       const nuevaSolicitud = {
         ...solicitud,
+        fechaInicio,
+        fechaFin,
+        fechaSolicitud,
         fechaCreacion: serverTimestamp(),
         estado: 'pendiente',
         proyecto: 'uholidays3'
@@ -85,12 +123,12 @@ export function useFirebaseVacationsUholidays3() {
           diasSolicitados: data.diasSolicitados || 0,
           motivo: data.motivo || '',
           estado: data.estado || 'pendiente',
-          fechaSolicitud: data.fechaSolicitud?.toDate() || new Date(),
-          fechaCreacion: data.fechaCreacion?.toDate() || new Date(),
-          fechaInicio: new Date(data.fechaInicio),
-          fechaFin: new Date(data.fechaFin),
+          fechaSolicitud: convertFirebaseDate(data.fechaSolicitud),
+          fechaCreacion: convertFirebaseDate(data.fechaCreacion),
+          fechaInicio: convertFirebaseDate(data.fechaInicio),
+          fechaFin: convertFirebaseDate(data.fechaFin),
           comentarios: data.comentarios || '',
-          fechaAprobacion: data.fechaAprobacion?.toDate()
+          fechaAprobacion: data.fechaAprobacion ? convertFirebaseDate(data.fechaAprobacion) : undefined
         } as SolicitudVacaciones);
       });
 

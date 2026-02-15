@@ -7,9 +7,9 @@ const empleadosEjemplo: Empleado[] = [
   {
     id: '1',
     numeroEmpleado: 1001,
-    nombre: 'Francisco Javier',
-    apellidos: 'Velazquez Servin',
-    email: 'francisco.velazquez@empresa.com',
+    nombre: 'Arturo',
+    apellidos: 'Jimenez',
+    email: 'arturo.jimenez@empresa.com',
     departamento: 'Analista QA',
     fechaIngreso: new Date('2021-01-15'),
     diasVacacionesAnuales: 22,
@@ -94,7 +94,7 @@ const solicitudesEjemplo: SolicitudVacaciones[] = [
   {
     id: '2',
     numeroSolicitud: 2026002,
-    empleadoId: '1', // Francisco Javier
+    empleadoId: '1', // Arturo Jimenez
     fechaInicio: new Date('2026-02-15'),
     fechaFin: new Date('2026-02-19'),
     diasSolicitados: 5,

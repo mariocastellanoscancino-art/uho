@@ -140,7 +140,7 @@ const getDiasDisponiblesInfo = (empleado: Empleado) => {
 
 | Usuario | Rol | Días Disponibles | Caso de Uso |
 |---------|-----|------------------|-------------|
-| **Francisco Javier** | Colaborador | 20 días | ✅ Flujo normal completo |
+| **Arturo Jimenez** | Colaborador | 20 días | ✅ Flujo normal completo |
 | **Patricio Bustos** | Encargado | **0 días** | ❌ Validación sin días |
 | **Gabriel Rojo** | Jefe | 13 días | 🔄 Aprobaciones multinivel |
 | **Jesús Navarro** | RRHH | 15 días | 👑 Acceso administrativo |

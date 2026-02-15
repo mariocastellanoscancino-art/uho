@@ -50,8 +50,8 @@ export interface Usuario {
 const empleadosEjemplo: Empleado[] = [
   {
     id: '1',
-    nombre: 'Francisco Javier',
-    apellidos: 'Velazquez Servin',
+    nombre: 'Arturo',
+    apellidos: 'Jimenez',
     diasVacacionesAnuales: 22,     // Días totales del año
     diasVacacionesUsados: 4,       // Días ya consumidos
     diasVacacionesDisponibles: 18, // Días restantes (22 - 4)

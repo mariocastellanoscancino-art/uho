@@ -84,9 +84,9 @@ const obtenerPermisosPorTipo = (tipo: TipoUsuario): Permisos => {
 const usuariosEjemplo: Usuario[] = [
   {
     id: '1',
-    nombre: 'Francisco Javier',
-    apellidos: 'Velazquez Servin',
-    email: 'francisco.velazquez@empresa.com',
+    nombre: 'Arturo',
+    apellidos: 'Jimenez',
+    email: 'arturo.jimenez@empresa.com',
     tipo: 'colaborador',
     departamento: 'Analista QA',
     fechaIngreso: new Date('2021-01-15'),
